@@ -62,9 +62,8 @@ internal class Program
 #endif
         var app = new Program();
 
-        var ss = ArgsToArray(Environment.CommandLine).Skip(1).ToArray();
-
         // command line
+        var ss = ArgsToArray(Environment.CommandLine).Skip(1).ToArray();
         if (app.ParseCommandLine(ss) != 0)
         {
             var s1 = "args:";
@@ -126,17 +125,12 @@ internal class Program
             }
 
             //run script
-            if (src.Length > 0)
+            if (!app.RunScript(src))
             {
-                if (!app.RunScript(src))
-                {
-                    var msg = "load script: " + Path.GetFileName(src);
-                    verbose_println(msg);
-                }
-            }
-            else
-            {
-
+                var msg = "load script: " + Path.GetFileName(src);
+                verbose_println(msg);
+                Environment.ExitCode = -1;
+                return;
             }
         }
 
