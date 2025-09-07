@@ -405,8 +405,7 @@ internal class Program
                 if (args.Length < 1) continue;
                 Reset();
                 ParseCommandLine(args.ToArray());
-                var res = Run();
-                if (res < 0) break;
+                if (Run() < 0) return false;
                 continue;
             }
         }
