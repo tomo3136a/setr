@@ -442,6 +442,27 @@ internal class Program
     /// <returns>error code, 0 is ok</returns>
     private int Run()
     {
+        var s = "";
+        if (cmds.Count > 0)
+        {
+            s = cmds[0];
+            var i = s.IndexOf('=');
+            if (i >= 0)
+            {
+                cmds.RemoveAt(0);
+                if (i > 0)
+                {
+                    var s2 = s.Substring(0, i).Trim();
+                    cmds.Insert(0, s2);
+                }
+                s = s.Substring(i + 1).Trim();
+                if (s.Length > 0)
+                {
+                    cmds.Insert(1, s);
+                }
+            }
+        }
+
         var res = 0;
         switch (cmd)
         {
