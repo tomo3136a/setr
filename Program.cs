@@ -62,11 +62,13 @@ internal class Program
 #endif
         var app = new Program();
 
+        var ss = ArgsToArray(Environment.CommandLine).Skip(1).ToArray();
+
         // command line
-        if (app.ParseCommandLine(args) != 0)
+        if (app.ParseCommandLine(ss) != 0)
         {
             var s1 = "args:";
-            foreach (var arg in args) s1 += " " + arg;
+            foreach (var s in ss) s1 += " " + s;
             system_println("引数が正しくありません。\n" + s1, 3);
             Environment.ExitCode = -1;
             return;
