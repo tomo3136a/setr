@@ -12,6 +12,7 @@ using System.Diagnostics.SymbolStore;
 
 internal class Program
 {
+    private const string version = "1.0";
     private static bool b_verbose = false;
     private static bool b_cui = false;
     private bool b_append = false;
@@ -454,7 +455,7 @@ internal class Program
     /// <returns></returns>
     int Cmd_Version()
     {
-        Console.WriteLine("1.0");
+        Console.WriteLine(version);
         return 0;
     }
 
