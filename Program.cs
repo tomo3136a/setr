@@ -7,8 +7,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Diagnostics;
-using System.Diagnostics.SymbolStore;
 
 internal class Program
 {
