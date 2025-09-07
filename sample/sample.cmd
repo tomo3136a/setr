@@ -2,13 +2,13 @@
 setlocal
 cls
 
-setr -i "%~0" -o env.cmd
+setr -i "%~0" -o env.bat
 if %ERRORLEVEL% neq 0 (
 echo íÜífÇµÇ‹ÇµÇΩÅB
 pause
 exit -1
 )
-call env.cmd
+call env.bat
 
 echo AAA=%AAA%
 echo BBB=%BBB%
