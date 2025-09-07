@@ -145,6 +145,17 @@ internal class Program
 
     private void SetGlobal()
     {
+        if (title == "")
+        {
+            if (ipath.Length > 0)
+            {
+                title = Path.GetFileNameWithoutExtension(ipath);
+            }
+            else
+            {
+                title = AppName();
+            }
+        }
         b_relative2 = b_relative;
         cpath2 = cpath;
         title2 = title;
@@ -551,8 +562,7 @@ internal class Program
             DialogResult res = MessageBox.Show(
                 s, title, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button1,
-                MessageBoxOptions.DefaultDesktopOnly);
+                MessageBoxDefaultButton.Button1);
             s = "";
             if (res == DialogResult.Yes)
             {
