@@ -77,28 +77,7 @@ internal class Program
         var dst = app.opath;
         if (src == "")
         {
-            var s = "";
-            if (app.cmds.Count > 0)
-            {
-                s = app.cmds[0];
-                var i = s.IndexOf('=');
-                if (i >= 0)
-                {
-                    app.cmds.RemoveAt(0);
-                    if (i > 0)
-                    {
-                        var s2 = s.Substring(0, i).Trim();
-                        app.cmds.Insert(0, s2);
-                    }
-                    s = s.Substring(i + 1).Trim();
-                    if (s.Length > 0)
-                    {
-                        app.cmds.Insert(1, s);
-                    }
-                }
-            }
-            var res = app.Run();
-            if (res < 0)
+            if (app.Run() < 0)
             {
                 Environment.ExitCode = -1;
                 return;
