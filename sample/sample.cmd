@@ -22,7 +22,7 @@ goto :eof
 
 rem # コメント
 rem * AAA=12
-rem * -p BBB -m 入力してぅださい。
+rem * -p BBB -m 入力してください。
 rem * -y CCC
 rem * -f DDD
 rem * -g EEE
