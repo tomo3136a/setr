@@ -4,12 +4,13 @@
       "name": "C#: net4.8.1 Debug",
       "type": "clr",
       "request": "launch",
+      "preLaunchTask": "build",
       "program": "${workspaceFolder}/bin/Debug/net481-windows/setr.exe",
       "args": ["--version"],
       "cwd": "${workspaceFolder}",
-      "console": "internalConsole",
+      "stopAtEntry": false,
       "internalConsoleOptions": "openOnSessionStart",
-      "stopAtEntry": false
+      "console": "internalConsole"
     },
     {
       "name": "C#: スタートアップ プロジェクトの起動",
