@@ -3,7 +3,7 @@
 $AppName = "setr.exe"
 $OutputPath = "c:/opt/bin"
 
-$Path = "*Program.cs"
+$Path = "src/*.cs"
 $ReferencedAssemblies = "System.Drawing", "System.Windows.Forms", `
   "System.Xml", "System.Xml.Linq"
 
