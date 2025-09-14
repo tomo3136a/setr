@@ -30,6 +30,8 @@ internal class Program
 
     List<string> cmds;
     List<string> outs;
+    Dictionary<string, string> kvs;
+
 
     Program()
     {
@@ -45,6 +47,7 @@ internal class Program
 
         cmds = new List<string>();
         outs = new List<string>();
+        kvs = new Dictionary<string, string>();
     }
 
     /// <summary>
@@ -75,6 +78,13 @@ internal class Program
         // input/output file
         var src = app.ipath;
         var dst = app.opath;
+        if (dst != "")
+        {
+            if (File.Exists(dst))
+            {
+                app.Load(dst);
+            }
+        }
         if (src == "")
         {
             if (app.Run() < 0)
@@ -496,6 +506,13 @@ internal class Program
         if (cmds.Count == 0) return -1;
         var s = (cmds.Count > 1) ? cmds[1] : "";
         s = RemoveQuate(s);
+        if (s == "")
+        {
+            if (kvs.ContainsKey(cmds[0]))
+            {
+                s = kvs[cmds[0]];
+            }
+        }
         if (b_cui)
         {
             var res = Prompt(ref s);
@@ -519,6 +536,18 @@ internal class Program
     int Cmd_YesNo()
     {
         if (cmds.Count < 1) return -1;
+        var v = "1";
+        if (kvs.ContainsKey(cmds[0]))
+        {
+            if (cmds.Count > 1)
+            {
+                if (kvs[cmds[0]] == cmds[1]) v = "1";
+            }
+            if (cmds.Count > 2)
+            {
+                if (kvs[cmds[0]] == cmds[2]) v = "0";
+            }
+        }
         var s = RemoveQuate(msg);
         if (b_cui)
         {
@@ -552,10 +581,11 @@ internal class Program
         else
         {
             if (s == "") s = cmds[0] + " ?";
+            var btn = MessageBoxDefaultButton.Button1;
+            if (v == "0") btn = MessageBoxDefaultButton.Button2;
             DialogResult res = MessageBox.Show(
                 s, title, MessageBoxButtons.YesNoCancel,
-                MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button1);
+                MessageBoxIcon.Question, btn);
             s = "";
             if (res == DialogResult.Yes)
             {
@@ -583,6 +613,10 @@ internal class Program
     {
         if (cmds.Count < 1) return -1;
         var s = cpath;
+        if (kvs.ContainsKey(cmds[0]))
+        {
+            s = kvs[cmds[0]];
+        }
         if (b_cui)
         {
             var res = Prompt(ref s);
@@ -670,6 +704,10 @@ internal class Program
     {
         if (cmds.Count < 1) return -1;
         var s = cpath;
+        if (kvs.ContainsKey(cmds[0]))
+        {
+            s = kvs[cmds[0]];
+        }
         if (b_cui)
         {
             var res = Prompt(ref s);
@@ -834,6 +872,22 @@ internal class Program
         }
         res = "." + res;
         return res;
+    }
+
+    void Load(string path)
+    {
+        var enc = Encoding.GetEncoding(932);
+        foreach (var line in File.ReadLines(path))
+        {
+            var ss = line.Split(new char[] { ' ' }, 2);
+            if (ss.Length != 2) continue;
+            ss = ss[1].Split(new char[] { '=' }, 2);
+            if (ss.Length != 2) continue;
+            var k = ss[0];
+            var v = ss[1];
+            if (kvs.ContainsKey(k)) kvs.Remove(k);
+            kvs.Add(k, v);
+        }
     }
 
     /// <summary>
