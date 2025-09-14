@@ -238,7 +238,7 @@ internal class Program
                 case "c": cpath = s; break;
                 case "s": spath = s; break;
                 case "t": title = s; break;
-                case "m": msg = s; break;
+                case "m": msg += ((msg == "") ? "" : "\n") + s; break;
                 default: res = -1; break;
             }
             opt_flg = false;
@@ -520,6 +520,7 @@ internal class Program
         }
         else
         {
+            Console.WriteLine("msg:" + msg);
             var res = ShowInputBox(ref s, msg, title);
             if (res != DialogResult.OK) return -1;
         }
@@ -750,7 +751,7 @@ internal class Program
     /// <returns></returns>
     private static DialogResult ShowInputBox(
         ref string s, string msg, string title = "Title",
-        int w = 300, int h = 140, string ptn = "")
+        int w = 300, int h = 145, string ptn = "")
     {
         var sz = new Size(w, h);
         var m = 10;
@@ -771,10 +772,11 @@ internal class Program
         lbl.Text = msg;
         lbl.Location = new Point(m, m);
         lbl.Width = sz.Width - 2 * m;
+        lbl.Height = 3 * 20;
         dlg.Controls.Add(lbl);
 
         TextBox txt = new TextBox();
-        txt.Anchor = (AnchorStyles)(AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
+        txt.Anchor = (AnchorStyles)(AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right);
         txt.BorderStyle = BorderStyle.FixedSingle;
         txt.Size = new Size(sz.Width - 2 * m, 23);
         txt.Location = new Point(m, lbl.Location.Y + lbl.Height + m);
@@ -787,7 +789,7 @@ internal class Program
         ok.Name = "ok";
         ok.Size = new Size(75, 23);
         ok.Text = "&OK";
-        ok.Location = new Point(sz.Width - 80 - 80 - m, sz.Height - 4 * m);
+        ok.Location = new Point(sz.Width - 80 - 75 - m, sz.Height - 4 * m);
         dlg.Controls.Add(ok);
 
         Button cancel = new Button();
@@ -796,7 +798,7 @@ internal class Program
         cancel.Name = "cancel";
         cancel.Size = new Size(75, 23);
         cancel.Text = "&Cancel";
-        cancel.Location = new Point(sz.Width - 80 - m, sz.Height - 4 * m);
+        cancel.Location = new Point(sz.Width - 75 - m, sz.Height - 4 * m);
         dlg.Controls.Add(cancel);
 
         dlg.AcceptButton = ok;
