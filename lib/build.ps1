@@ -1,6 +1,6 @@
 ﻿#builder
 #
-param($OutputPath = "./bin",[switch]$pass)
+param($OutputPath = "./bin", [switch]$pass)
 
 $AppName = "setr.exe"
 
@@ -24,7 +24,5 @@ Add-Type -Path $Path -OutputType ConsoleApplication `
   -OutputAssembly $OutputAssembly `
   -ReferencedAssemblies $ReferencedAssemblies
 
-Copy-Item -Force lib/install.cmd $OutputPath
-
 Write-Host "build completed." -ForegroundColor Yellow
-if ($pass) { $host.UI.RawUI.ReadKey() | Out-Null }
+if (-not $pass) { $host.UI.RawUI.ReadKey() | Out-Null }
