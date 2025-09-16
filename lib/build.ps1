@@ -1,7 +1,8 @@
 ﻿#builder
 #
+param($OutputPath = "./bin",[switch]$pass)
+
 $AppName = "setr.exe"
-$OutputPath = "./bin"
 
 $Path = "src/*.cs"
 $ReferencedAssemblies = "System.Drawing", "System.Windows.Forms", `
@@ -26,4 +27,4 @@ Add-Type -Path $Path -OutputType ConsoleApplication `
 Copy-Item -Force lib/install.cmd $OutputPath
 
 Write-Host "build completed." -ForegroundColor Yellow
-$host.UI.RawUI.ReadKey() | Out-Null
+if ($pass) { $host.UI.RawUI.ReadKey() | Out-Null }
