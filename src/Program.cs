@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Drawing;
+using Tmm;
 
 internal class Program
 {
@@ -207,11 +208,12 @@ internal class Program
                     case "u": b = !b_update; break;
                     case "a": b = !b_append; break;
                     case "r": b = !b_relative; break;
-                    case "d": cmd = opt; continue;
-                    case "p": cmd = opt; continue;
-                    case "y": cmd = opt; continue;
-                    case "f": cmd = opt; continue;
-                    case "g": cmd = opt; continue;
+                    case "d": cmd = opt; continue; //delete
+                    case "p": cmd = opt; continue; //prompt
+                    case "y": cmd = opt; continue; //yesno
+                    case "f": cmd = opt; continue; //file select
+                    case "g": cmd = opt; continue; //folder select
+                    case "l": cmd = opt; continue; //list select
                 }
                 switch (m.Groups[3].Value)
                 {
@@ -458,6 +460,7 @@ internal class Program
             case "y": res = Cmd_YesNo(); break;       //set message
             case "f": res = Cmd_File(); break;        //set file
             case "g": res = Cmd_Folder(); break;      //set folder
+            case "l": res = Cmd_List(); break;        //set list
             default: break;
         }
         return res;
@@ -737,6 +740,74 @@ internal class Program
         outs.Add(s);
         msg = "";
         return 0;
+    }
+
+    /// <summary>
+    /// set datalist
+    /// </summary>
+    /// <returns></returns>
+    int Cmd_List()
+    {
+        if (cmds.Count < 1) return -1;
+        var s = cpath;
+        if (kvs.ContainsKey(cmds[0]))
+        {
+            s = kvs[cmds[0]];
+        }
+        if (b_cui)
+        {
+            //not support
+            return -1;
+        }
+        else
+        {
+            //if (cmds.Count > 1) s = cmds[1];
+            var dlg = new Tmm.UI.InputDialog(msg, title, true);
+            //dlg.Text1 = " ";
+            //dlg.Text2 = " ";
+            try
+            {
+                foreach (var src in cmds.Skip(1))
+                {
+                    try
+                    {
+                        if (File.Exists(src))
+                        {
+                            var lines = File.ReadAllLines(src);
+                            foreach (var line in lines)
+                            {
+                                dlg.AddListItem(line);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("operation error.\n" + ex.Message,
+                            title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                dlg.Value = s;
+                s = "";
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    s = dlg.Value;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("operation error. TaggingDialog",
+                    title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            dlg.Dispose();
+            if (s == "")
+            {
+                return -1;
+            }
+            s = "set " + cmds[0] + "=" + s;
+            outs.Add(s);
+            msg = "";
+            return 0;
+        }
     }
 
     /// <summary>
